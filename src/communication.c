@@ -21,7 +21,11 @@
 
 #include <communication.h>
 
-#include <openssl/sha.h>
+#if defined(__APPLE__) && defined(__MACH__)
+#include <CommonCrypto/CommonDigest.h>
+#else
+#include <openssl/evp.h>
+#endif
 
 
 
@@ -36,7 +40,6 @@ struct _communicationDescriptionContext {
 	int communicationDescriptor;
 	xdrproc_t converterf;
 	XDR xdrs;
-	char digest[SHA_DIGEST_LENGTH];
 };
 typedef struct _communicationDescriptionContext CMCommunicationDescriptionContext;
 
@@ -155,6 +158,7 @@ int CMSendMessage(int communicationDescriptor, void *message) {
 	if (context->socket == -1) return errno = EINVAL, -1;
 	if (context->converterf == NULL) return errno = EINVAL, -1;
 
+//	CC_SHA1((const unsigned char *)line->content, size, line->id);
 //	SHA1((const unsigned char *)line->content, size, line->id);
 	
 	XDR *xdrs = &(context->xdrs);
@@ -272,11 +276,11 @@ static int readit(char *handler, char *buffer, int nbytes) {
 	return bytes;
 }
 
-bool_t xdr_digest(XDR *xdrs, CMCommunicationDescriptionContext *context) {
-	if (xdrs == NULL || context == NULL) return errno = EINVAL, FALSE;
-	return xdr_opaque(xdrs, context->digest, SHA_DIGEST_LENGTH);
-}
-
+//bool_t xdr_digest(XDR *xdrs, CMCommunicationDescriptionContext *context) {
+//	if (xdrs == NULL || context == NULL) return errno = EINVAL, FALSE;
+//	return xdr_opaque(xdrs, context->digest, SHA_DIGEST_LENGTH);
+//}
+//
 //const char *CMCommunicationErrorString(int errorCode) {
 ////	if ( errorCode < 1 || errorCode > _CMCommandErrorCount ) return errno = EINVAL, (const char *)NULL;
 //	return _CErrors[errorCode];

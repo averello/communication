@@ -23,15 +23,6 @@
 extern "C" {
 #endif
 
-
-///*!
-// *  @typedef typedef bool_t (*xdr_f)(XDR *, const void *)
-// *  @brief The converter function.
-// *  @ingroup communication
-// *  @details The function to be used for converting custom structures with xdr.
-// */
-//typedef bool_t (*xdr_f)(XDR *, const void *);
-
 /*!
  *  @fn int CMInitCommunicationWithSocketAndConverter(int socket, xdr_f converter)
  *  @brief Initializes a communication session.
