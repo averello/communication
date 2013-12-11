@@ -21,8 +21,6 @@
 
 #ifdef __cplusplus
 extern "C" {
-#else
-	
 #endif
 
 
